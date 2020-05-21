@@ -1,0 +1,104 @@
+server:
+  port: 8080
+  use-forward-headers: true
+    
+spring:
+  application:
+    name: conductor-boot-wrapper
+  datasource:
+    name: conductor
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password} 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    tomcat:
+      test-while-idle: true
+      validation-query: SELECT 1
+    initialization-mode: never
+    platform: mysql
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+      ddl-auto: validate
+  flyway:
+    baseline-on-migrate: true
+
+check-user-scopes: true
+awaitTermination: 3000
+
+wrapper_db: mysql
+
+logbook:
+  filter:
+    enabled: true
+  write:
+    level: info
+    chunk-size: 10000
+  format:
+    style: splunk
+  exclude: [/actuator/**, /v3/api-docs/**, /swagger-ui/**, /index.html, /api/swagger.json]
+  strategy: body-only-if-status-at-least
+  minimum-status: 400
+
+## Conductor MYSQL Configuration for Hikari DataSource
+db: mysql
+jdbc:
+  url: jdbc:mysql://localhost:3306/conductor?createDatabaseIfNotExist=true&autoReconnect=true&verifyServerCertificate=false&useSSL=false 
+  username: Conductor
+  password: Conductor!23$
+conductor:
+  jetty:
+    server:
+      port: 1987
+  mysql:
+    connection:
+      timeout: 18000000
+      idle:
+        timeout: 31536000 
+      pool:
+        idle:
+          min: 2
+        size:
+          max: 10000
+
+zuul:
+  add-proxy-headers: true
+  add-host-header: true
+  sensitive-headers:
+  - Authorization
+  routes:
+    conductor-index:
+      path: /
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+    conductor-html:
+      path: /index.html
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false
+    conductor-swagger-json:
+      path: /api/swagger.json
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false
+    conductor-swagger-lib:
+      path: /lib/**
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false
+    conductor-swagger-css:
+      path: /css/**
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false
+    conductor-swagger-js:
+      path: /swagger-ui.js
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false
+    conductor-api:
+      path: /api/**
+      url: http://localhost:${conductor.jetty.server.port}
+      retryable: true
+      strip-prefix: false

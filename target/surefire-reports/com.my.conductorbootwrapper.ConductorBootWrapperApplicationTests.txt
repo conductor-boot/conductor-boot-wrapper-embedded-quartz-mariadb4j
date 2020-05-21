@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.my.conductorbootwrapper.ConductorBootWrapperApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.224 s - in com.my.conductorbootwrapper.ConductorBootWrapperApplicationTests
