@@ -20,6 +20,8 @@ By combining Quartz with Conductor, the Workflows that are otherwise triggered m
 
 Though the idea of making Scheduler for Conductor is good, it still needs a lot of knowledge on JSON, to write up the Web Service calls and lot of knowledge on Quartz, to define the Scheduler part.
 
+## Build Status - ![Java CI with Maven](https://github.com/conductor-boot/conductor-boot-wrapper-embedded-quartz-mariadb4j/workflows/Java%20CI%20with%20Maven/badge.svg)
+
 ## Pre-Requisites
 1. openjdk8 or Java 8
 2. Maven / mvn
